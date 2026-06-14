@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>Loading…</title>
+
+    <link rel="preconnect" href="https://api.lanyard.rest" crossorigin />
+    <link rel="preconnect" href="https://cdn.discordapp.com" crossorigin />
+    <link rel="dns-prefetch" href="//i.scdn.co" />
+    <link rel="dns-prefetch" href="//media.discordapp.net" />
+
+    <link rel="preload" as="image" href="assets/background/background.gif" fetchpriority="high" />
+    <link rel="preload" as="image" href="assets/avatar/avatar.jpg" />
+
+    <link rel="icon" id="favicon" href="assets/icons/online.webp" />
+    <link rel="stylesheet" href="style.css?v=1462026" />
+
+    <script src="config.js?v=1462026" defer></script>
+    <script src="script.js?v=1462026" defer></script>
+  </head>
+  <body>
+    <div class="background" id="background"></div>
+
+    <button class="mute-btn" id="muteBtn" aria-label="Mute / unmute" aria-pressed="false">
+      <svg class="icon-sound" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12zM14 3.23v2.06a7 7 0 010 13.42v2.06a9 9 0 000-17.54z"/>
+      </svg>
+      <svg class="icon-muted" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 9v6h4l5 5V4L7 9H3zm18.59-1L23 9.41 20.41 12 23 14.59 21.59 16 19 13.41 16.41 16 15 14.59 17.59 12 15 9.41 16.41 8 19 10.59 21.59 8z"/>
+      </svg>
+    </button>
+
+    <div class="enter-screen" id="enterScreen">
+      <div class="enter-inner">
+        <p class="enter-text">click to enter</p>
+      </div>
+    </div>
+
+    <main class="page" id="page">
+      <section class="card profile-card">
+        <div class="avatar-wrap">
+          <img class="avatar" id="avatar" alt="Avatar" decoding="async" fetchpriority="high" />
+        </div>
+
+        <h1 class="name" id="name"></h1>
+        <p class="quote" id="quote"></p>
+
+        <p class="location">
+          <svg class="pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/>
+          </svg>
+          <span id="location"></span>
+        </p>
+
+        <div class="discord" id="discord" hidden>
+          <div class="discord-user">
+            <div class="discord-avatar-wrap">
+              <img class="discord-avatar" id="discordAvatar" alt="Discord avatar" decoding="async" />
+              <span class="discord-status-dot" id="discordStatusDot"></span>
+            </div>
+            <div class="discord-meta">
+              <span class="discord-name-row">
+                <button class="discord-username" id="discordUsername" type="button" title="Click to copy"></button>
+                <span class="discord-badges" id="discordBadges" aria-hidden="true"></span>
+              </span>
+              <span class="discord-state" id="discordState"></span>
+              <span class="discord-state-sub" id="discordStateSub" hidden></span>
+            </div>
+            <img class="discord-activity-img" id="activityImg" alt="" decoding="async" hidden />
+          </div>
+        </div>
+
+        <nav class="socials" id="socials" aria-label="Social links"></nav>
+      </section>
+
+      <section class="card player-card">
+        <img class="player-cover" id="playerCover" alt="Album cover" decoding="async" />
+
+        <div class="player-main">
+          <div class="player-info" id="playerInfo">
+            <span class="player-info-text">
+              <span class="player-title" id="playerTitle"></span>
+              <span class="player-sep">-</span>
+              <span class="player-artist" id="playerArtist"></span>
+            </span>
+          </div>
+
+          <div class="player-progress-row">
+            <span class="time" id="currentTime">0:00</span>
+            <div class="progress" id="progress">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="time" id="duration">0:00</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="ctrl" id="prevBtn" aria-label="Previous track">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
+          <button class="ctrl play" id="playBtn" aria-label="Play / Pause">
+            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+          </button>
+          <button class="ctrl" id="nextBtn" aria-label="Next track">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
+          </button>
+        </div>
+
+        <audio id="audio" preload="none"></audio>
+      </section>
+
+      <footer class="site-footer">
+        Made by
+        <a
+          class="footer-link"
+          href="https://www.facebook.com/withoutminh/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Nhat Minh</a
+        >
+        with <span class="footer-heart" aria-hidden="true">❤️</span>
+      </footer>
+    </main>
+  </body>
+
+</html>

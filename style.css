@@ -1,0 +1,734 @@
+:root {
+  --accent: #ffffff;
+  --card-bg: rgba(12, 14, 20, 0.55);
+  --player-bg: rgba(12, 14, 20, 0.6);
+  --text-primary: #ffffff;
+  --text-secondary: #b8bcc6;
+
+  --radius: 18px;
+  --gap: 18px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial,
+    sans-serif;
+  color: var(--text-primary);
+  background: #06080e;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.background {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -2;
+}
+
+.mute-btn {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.28);
+
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.4s ease,
+    visibility 0.4s ease;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.mute-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.mute-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.25);
+}
+
+.mute-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.mute-btn .icon-muted {
+  display: none;
+}
+.mute-btn.muted .icon-sound {
+  display: none;
+}
+.mute-btn.muted .icon-muted {
+  display: block;
+}
+
+.enter-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 6, 12, 0.7);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  z-index: 50;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.enter-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.enter-text {
+  font-size: clamp(1.1rem, 4vw, 1.6rem);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+  padding: 32px 16px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.page.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card {
+  width: 100%;
+  max-width: 640px;
+
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.profile-card {
+  padding: 32px 28px 26px;
+  text-align: center;
+}
+
+.avatar-wrap {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  padding: 3px;
+  background: #06080e;
+  isolation: isolate;
+}
+
+.avatar-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  z-index: 0;
+  background: conic-gradient(
+    from 0deg,
+    #00e5ff,
+    #ff4ecd,
+    #00e5ff
+  );
+  animation: neon-spin 3.2s linear infinite;
+}
+
+.avatar-wrap::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  z-index: -1;
+  background: conic-gradient(from 0deg, #00e5ff, #ff4ecd, #00e5ff);
+  filter: blur(14px);
+  opacity: 0.55;
+  animation: neon-spin 3.2s linear infinite;
+}
+
+.avatar {
+  position: relative;
+  z-index: 2;
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: none;
+}
+
+@keyframes neon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-wrap::before,
+  .avatar-wrap::after {
+    animation: none;
+  }
+}
+
+.name {
+  margin-top: 16px;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.55),
+    0 0 36px rgba(255, 255, 255, 0.25);
+}
+
+.quote {
+  margin-top: 8px;
+  padding-left: 40px;
+  padding-right: 40px;
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.5;
+  color: white;
+}
+
+.location {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+.pin {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+
+.discord {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 8px;
+  width: 400px;
+  height: 101px;
+  display: flex;
+  align-items: center;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: left;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.discord.no-activity {
+  width: fit-content;
+}
+
+.discord.no-activity .discord-user {
+  width: auto;
+}
+
+.discord-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.discord-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.discord-avatar {
+  width: 73px;
+  height: 73px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.discord-status-dot {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid #1a1d26;
+  background-color: #1a1d26;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.discord-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  flex: 1;
+}
+
+.discord-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.discord-username {
+  font-size: 1.1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.15s ease, text-shadow 0.15s ease;
+}
+
+.discord-username:hover {
+  color: #fff;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+
+.discord-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.discord-badges img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.copy-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  z-index: 80;
+
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: rgba(12, 14, 20, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+.copy-toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.discord-state {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.discord-state-text {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.discord-state-text.marquee {
+  animation-name: activity-marquee;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes activity-marquee {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  18% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  82% {
+    transform: translateX(var(--scroll-distance, 0));
+    opacity: 1;
+  }
+  93% {
+    transform: translateX(var(--scroll-distance, 0));
+    opacity: 1;
+  }
+  96% {
+    transform: translateX(var(--scroll-distance, 0));
+    opacity: 0;
+  }
+  97% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discord-state-text.marquee {
+    animation: none;
+  }
+}
+
+.discord-state .verb {
+  font-weight: 700;
+}
+
+.discord-state-sub {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.discord-activity-img {
+  width: 73px;
+  height: 73px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.socials {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: clamp(6px, 3vw, 14px);
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(32px, 11vw, 42px);
+  height: clamp(32px, 11vw, 42px);
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  transition: transform 0.2s ease, background 0.2s ease,
+    box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.social-link:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--brand, var(--accent));
+  box-shadow: 0 0 18px var(--brand, rgba(255, 255, 255, 0.3));
+}
+
+.social-link svg {
+  width: clamp(15px, 5vw, 20px);
+  height: clamp(15px, 5vw, 20px);
+}
+
+.social-link img {
+  width: clamp(15px, 5vw, 20px);
+  height: clamp(15px, 5vw, 20px);
+  object-fit: contain;
+}
+
+.player-card {
+  max-width: 640px;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px 12px 12px;
+  border-radius: 16px;
+}
+
+.player-cover {
+  width: 62px;
+  height: 62px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.player-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.player-info {
+  overflow: hidden;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.player-info-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.player-info-text.marquee {
+  animation-name: activity-marquee;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .player-info-text.marquee {
+    animation: none;
+  }
+}
+
+.player-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.player-sep {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.player-artist {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.player-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.time {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.progress {
+  flex: 1;
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 99px;
+  background: var(--accent);
+  transition: width 0.1s linear;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.ctrl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.ctrl svg {
+  width: 22px;
+  height: 22px;
+}
+
+.ctrl:hover {
+  transform: scale(1.12);
+  color: var(--accent);
+}
+
+.ctrl.play svg {
+  width: 24px;
+  height: 24px;
+}
+
+.ctrl.play .icon-pause {
+  display: none;
+}
+.ctrl.play .icon-play {
+  display: block;
+}
+.ctrl.play.playing .icon-play {
+  display: none;
+}
+.ctrl.play.playing .icon-pause {
+  display: block;
+}
+
+.site-footer {
+  margin-top: 6px;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.footer-link {
+  font-weight: 700;
+  text-decoration: underline;
+  color: var(--text-secondary);
+  transition: color 0.15s ease, text-shadow 0.15s ease;
+}
+
+.footer-link:hover {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+}
+
+.footer-heart {
+  font-style: normal;
+}
+
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 26px 20px 22px;
+  }
+
+  .name {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 416px) {
+  .discord:not(.no-activity) .discord-badges {
+    display: none;
+  }
+}
+
+@media (max-width: 365px) {
+  .discord.no-activity {
+    width: 400px;
+  }
+
+  .discord.no-activity .discord-user {
+    width: 100%;
+  }
+}
+
+@media (max-width: 332px) {
+  .discord-badges {
+    display: none;
+  }
+
+  .discord-user {
+    justify-content: center;
+  }
+
+  .discord-meta {
+    flex: 0 1 auto;
+  }
+
+  .discord-name-row {
+    justify-content: center;
+  }
+}
